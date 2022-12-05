@@ -1,0 +1,5 @@
+﻿<Properties StartupConfiguration="{D9D101C4-4142-48BA-A58B-C4414D73D066}|Default">
+  <MonoDevelop.Ide.ItemProperties.NoteTakingApp PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.ItemProperties.DataLibrary FirstBuild="True" />
+  <MultiItemStartupConfigurations />
+</Properties>

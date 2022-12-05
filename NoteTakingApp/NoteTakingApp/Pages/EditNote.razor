@@ -1,0 +1,90 @@
+﻿@page "/edit-note/{Id}"
+@using DataLibrary
+@using NoteTakingApp.Models
+@using Microsoft.Extensions.Configuration
+@inject IDataAccess _data
+@inject IConfiguration _config
+@inject NavigationManager NavigationManager 
+
+<h3>Edit Note</h3>
+
+<EditForm Model="@NoteForm" OnValidSubmit="@HandleValidSubmit">
+
+    @if (notetaking == null)
+    {
+        <p>No Notes Avail..</p>
+    }
+    else
+    {
+        @foreach (var n in notetaking)
+        {
+            <table>
+                <tr>
+                    <td> <label>Title:</label></td>
+                    <td> @n.Title</td>
+                    <td><InputText @bind-Value=NoteForm.Title /></td>
+                </tr>
+
+                <tr>
+                    <td> <label>Message:</label></td>
+                    <td>
+                        <InputTextArea @bind-Value=NoteForm.Message DisplayName="@n.Message" />
+                    </td>
+                </tr>
+
+            </table>
+            @* <input type="submit" value="Submit" class="btn btn-primary" />
+                <button class="btn btn-primary" @onclick="@InsertNotes">Insert</button>*@
+
+            <input type="submit" value="Submit" class="btn btn-primary" />
+
+        }
+    }
+</EditForm>
+
+
+@code {
+    NoteTaking NoteForm = new NoteTaking();
+
+    List<NoteTaking>? notetaking;
+    //private string success = "";
+
+
+    /*   [Parameter]
+       public string Title { get; set; }
+       [Parameter]
+       public string Message { get; set; }  */
+
+    [Parameter]
+    public string Id { get; set; }
+
+
+
+    public async void HandleValidSubmit()
+    {
+        await UpdateNote(Id);
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetNote(Id);
+    }
+
+    private async Task GetNote(string Id)
+    {
+        string sql = "select * from test.NoteTaking where Id=@Id";
+        notetaking = await _data.LoadData<NoteTaking, dynamic>(sql, new { Id = @Id }, _config.GetConnectionString("default"));
+
+    }
+
+    private async Task UpdateNote(string Id)
+    {
+        string sql = "update NoteTaking set Title=@Title, Message=@Message where Id=@Id";
+        await _data.SaveData(sql, new { Title = @NoteForm.Title, Message = @NoteForm.Message, Id = @Id }, _config.GetConnectionString("default"));
+        NavigationManager.NavigateTo("/people");
+    }
+
+
+}
+
