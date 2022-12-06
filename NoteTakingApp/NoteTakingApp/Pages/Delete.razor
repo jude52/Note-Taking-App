@@ -1,0 +1,90 @@
+﻿@page "/delete-note/{Id}"
+@using DataLibrary
+@using NoteTakingApp.Models
+@using Microsoft.Extensions.Configuration
+@inject IDataAccess _data
+@inject IConfiguration _config
+@inject NavigationManager NavigationManager
+
+<h3>Are you sure you want to delete note?</h3>
+
+<EditForm Model="@NoteForm" OnValidSubmit="@HandleValidSubmit">
+
+    @if (notetaking == null)
+    {
+        <p>No Notes Avail..</p>
+    }
+    else
+    {
+        @foreach (var n in notetaking)
+        {
+            <table>
+                <tr>
+                    <td> @n.Title</td>
+                </tr>
+
+                <tr>
+                    <td> <label>@n.Message:</label></td>
+
+                </tr>
+
+            </table>
+            @* <input type="submit" value="Submit" class="btn btn-primary" />
+                <button class="btn btn-primary" @onclick="@InsertNotes">Insert</button>*@
+
+            <input type="submit" value="Yes" class="btn btn-primary" />
+            <a href="/people" class="btn btn-info">No</a>
+
+
+        }
+    }
+</EditForm>
+
+
+@code {
+            NoteTaking NoteForm = new NoteTaking();
+
+            List<NoteTaking>? notetaking;
+            //private string success = "";
+
+
+            /*   [Parameter]
+               public string Title { get; set; }
+               [Parameter]
+               public string Message { get; set; }  */
+
+            [Parameter]
+            public string Id { get; set; }
+
+
+
+            public async void HandleValidSubmit()
+            {
+                await DeleteNote(Id);
+            }
+
+
+    protected override async Task OnInitializedAsync()
+        {
+            await GetNote(Id);
+        }
+
+        private async Task GetNote(string Id)
+        {
+            string sql = "select * from test.NoteTaking where Id=@Id";
+            notetaking = await _data.LoadData<NoteTaking, dynamic>(sql, new { Id = @Id }, _config.GetConnectionString("default"));
+
+        }
+
+        private async Task DeleteNote(string Id)
+        {
+            string sql = "delete from Test.NoteTaking where Id=@Id";
+            await _data.SaveData(sql, new { Id = @Id }, _config.GetConnectionString("default"));
+            NavigationManager.NavigateTo("/people");
+
+
+
+
+        }
+    }
+

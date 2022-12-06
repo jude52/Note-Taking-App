@@ -23,6 +23,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ291bnRlci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/judeferguson/Desktop/REPOS/Note-Taking-App/NoteTakingApp/NoteTakingApp/Pages/Delete.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRGVsZXRlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/judeferguson/Desktop/REPOS/Note-Taking-App/NoteTakingApp/NoteTakingApp/Pages/EditNote.razor]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRWRpdE5vdGUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
