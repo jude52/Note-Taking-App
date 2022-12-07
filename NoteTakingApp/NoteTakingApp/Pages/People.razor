@@ -1,5 +1,5 @@
 ﻿@page "/people"
- 
+
 
 <PageTitle>Weather forecast</PageTitle>
 
@@ -12,75 +12,57 @@
 
 
 
-<h1>Welcome to your Note Taking App</h1>
+<h1>Note Taking Project</h1>
 
 @*List of Messages*@
+@*Filter List Below*@
 
 <EditForm Model=@NoteForm OnSubmit=@FormSubmitted>
     <div class="container">
-        <p>Message Form</p>
-        <div class="box"></div>
+        <label for="title">Title:</label>
+        <InputText @bind-Value=NoteForm.Title class="form-control" id="title" />
+        <label for="message">Message:</label>
+        <InputTextArea @bind-Value=NoteForm.Message class="form-control" id="message"></InputTextArea>
+        <div class="mx-auto" style="margin-top: 10px; margin-bottom: 10px;">
+            <button class="btn btn-primary" type="submit" @onclick="@InsertNotes" id="insertButton" style="width: 250px;">Insert</button>
+        </div>
     </div>
 
-    <table>
-        <tr>
-            <td> <label>Title:</label></td>
-            <td><InputText @bind-Value=NoteForm.Title /></td>
-        </tr>
-
-        <tr>
-            <td> <label>Message:</label></td>
-            <td><InputTextArea @bind-Value=NoteForm.Message></InputTextArea></td>
-        </tr>
-
-    </table>
-    @* <input type="submit" value="Submit" class="btn btn-primary" />*@
-    <button class="btn btn-primary" @onclick="@InsertNotes">Insert</button>
-
-
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Message</th>
-                <th>Options</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-
-            @foreach (var n in notes)
-            {
-                <tr>
-
-                    <td> <p>@n.Id</p></td>
-                    <td> <p>@n.Title</p></td>
-                    <td> <p>@n.Message</p></td>
-                    <td>
-
-                        <a href="@($"edit-note/{@n.Id}")" class="btn btn-danger m-1">Edit</a>
-                        <a href="@($"delete-note/{@n.Id}")" class="btn btn-warning m-1">Delete2</a>
-
-                    </td>
-                    <td>
-
-                        @* <a href="@($"edit-note/{@n.Id}")"
-                            class="btn btn-danger m-1">Delete</a>*@
-                    </td>
-                </tr>
-            }
-
-        </tbody>
-    </table>
-
-
 </EditForm>
+@* <input type="submit" value="Submit" class="btn btn-primary" />*@
+<h3>Notes</h3>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Title</th>
+            <th scope="col">Message</th>
+            <th scope="col">Options</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var n in notes)
+        {
+            <tr>
+                <td scope="row"> <p>@n.Id</p></td>
+                <td scope="row"> <p>@n.Title</p></td>
+                <td scope="row"> <p>@n.Message</p></td>
+                <td scope="row">
+
+                    <a href="@($"edit-note/{@n.Id}")" class="btn btn-danger m-1">Edit</a>
+                    <a href="@($"delete-note/{@n.Id}")" class="btn btn-warning m-1">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 
 
 
 @code {
- 
+
     List<NoteTaking>? notes;
 
     string Status = "Not submitted";
@@ -112,7 +94,7 @@
 
     }
 
- 
+
     private async Task DeleteNote(int Id)
     {
         string sql = "delete from Test.NoteTaking where Id=@Id";
